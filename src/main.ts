@@ -80,7 +80,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
             goToOptions!.waitUntil = waitUntil;
             goToOptions!.timeout = TIMEOUT_MS;
 
-            await page.setViewport({ width, height: 1080 });
+            //await page.setViewport({ width, height: 1080 });
         },
     ],
     requestHandler: async ({ page }) => {
@@ -130,10 +130,15 @@ const puppeteerCrawler = new PuppeteerCrawler({
         const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
         log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 
+        const html = await page.content(); // Get full HTML content of the page
+        console.log(html); // Print the full HTML to the console
+
+
         await Actor.pushData({
             url: page.url(),
             screenshotUrl,
             screenshotKey,
+            html, // Add HTML content to the output data
         });
     },
 });
