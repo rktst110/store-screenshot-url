@@ -132,7 +132,42 @@ const puppeteerCrawler = new PuppeteerCrawler({
         log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 
         const html = await page.content(); // Get full HTML content of the page
-        console.log(html); // Print the full HTML to the console
+        //console.log(html); // Print the full HTML to the console
+
+
+         // Execute JavaScript within the page context to access the shadow DOM content
+        const widgetContents = await page.evaluate(() => {
+            const widgetContents = document.getElementsByClassName('widget-content');
+            const results = [];
+
+            for (let i = 0; i < widgetContents.length; i++) {
+                const divID = '';
+                if (widgetContents[i].getElementsByTagName('div')[0].id.includes('ScriptRoot')) {
+                    const divID = widgetContents[i].getElementsByTagName('div')[0].id;
+                    results.push(divID);
+                }
+            }
+
+            return results;
+        });
+
+        // Process the results
+        for (const divID of widgetContents) {
+            console.log(divID);
+
+            // Execute further logic to access the shadowRoot if needed
+            const shadowRootContent = await page.evaluate((divID) => {
+                const divElement = document.getElementById(divID);
+
+                if (divElement.shadowRoot) {
+                    return divElement.shadowRoot.innerHTML;
+                } else {
+                    return 'The div does not contain a shadowRoot.';
+                }
+            }, divID);
+
+            console.log(shadowRootContent);
+        }
 
 
         await Actor.pushData({
