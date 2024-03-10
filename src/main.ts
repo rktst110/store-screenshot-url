@@ -70,7 +70,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
     launchContext: {
         useChrome: true,
     },
-    browserPoolOptions: browserPoolOptionsObject,
+   
     proxyConfiguration: await Actor.createProxyConfiguration(proxy),
     navigationTimeoutSecs: NAVIGATION_TIMEOUT_SECS,
     requestHandlerTimeoutSecs,
@@ -80,9 +80,10 @@ const puppeteerCrawler = new PuppeteerCrawler({
             goToOptions!.waitUntil = waitUntil;
             goToOptions!.timeout = TIMEOUT_MS;
 
-            //await page.setViewport({ width, height: 1080 });
+            await page.setViewport({ width, height: 1080 });
         },
     ],
+    browserPoolOptions: browserPoolOptionsObject,
     requestHandler: async ({ page }) => {
         if (delay > 0) {
             log.info(`Waiting ${delay}ms as specified in input`);
