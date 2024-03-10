@@ -155,11 +155,10 @@ const puppeteerCrawler = new PuppeteerCrawler({
         for (const divID of widgetContents) {
             console.log(divID);
 
-            // Execute further logic to access the shadowRoot if needed
             const shadowRootContent = await page.evaluate((divID) => {
                 const divElement = document.getElementById(divID);
 
-                if (divElement.shadowRoot) {
+                if (divElement && divElement.shadowRoot) {
                     return divElement.shadowRoot.innerHTML;
                 } else {
                     return 'The div does not contain a shadowRoot.';
