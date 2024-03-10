@@ -6,6 +6,9 @@ import { parseInput } from "./parseInput.js";
 import type { Input } from "./types.js";
 import { calculateRequestHandlerTimeoutSecs, generateUrlStoreKey } from "./utils.js";
 
+//manually importing BrowserName, DeviceCategory, OperatingSystemsName on 20-Jan-2024
+import { BrowserName, DeviceCategory, OperatingSystemsName  } from '@crawlee/browser-pool';
+
 const { APIFY_DEFAULT_KEY_VALUE_STORE_ID } = process.env;
 
 const NAVIGATION_TIMEOUT_SECS = 3600;
@@ -35,10 +38,39 @@ const requestHandlerTimeoutSecs = calculateRequestHandlerTimeoutSecs(
     delay,
 );
 
+
+        //manually adding browserPoolOptionsObject on 20-Jan-2024
+        var browserPoolOptionsObject={}
+     
+        	browserPoolOptionsObject = {
+                useFingerprints: true, // this is the default
+                fingerprintOptions: {
+                    fingerprintGeneratorOptions: {
+                        browsers: [
+                            BrowserName.chrome,
+                            BrowserName.firefox,
+                            BrowserName.edge,
+                            BrowserName.safari,
+                        ],
+                        devices: [
+                            DeviceCategory.mobile,
+                        ],
+                         operatingSystems: [
+                            OperatingSystemsName.android,
+                             OperatingSystemsName.ios,
+        					 OperatingSystemsName.windows,
+                        ],
+                        //locales: [ 'en-US', ],
+                    },
+                },
+            }
+        
+
 const puppeteerCrawler = new PuppeteerCrawler({
     launchContext: {
         useChrome: true,
     },
+    browserPoolOptions: browserPoolOptionsObject,
     proxyConfiguration: await Actor.createProxyConfiguration(proxy),
     navigationTimeoutSecs: NAVIGATION_TIMEOUT_SECS,
     requestHandlerTimeoutSecs,
