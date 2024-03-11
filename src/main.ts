@@ -167,7 +167,9 @@ const puppeteerCrawler = new PuppeteerCrawler({
                     allAnchorTags.forEach(anchorTag => {
                         if (anchorTag.href && anchorTag.href.includes('clck.')) {
                             // If the href attribute contains 'clck.', push it to the array
-                            anchorTagsArray.push(anchorTag.href);
+                            //anchorTagsArray.push(anchorTag.href);
+                            console.log(anchorTag);
+                            console.log(anchorTag.href);
                         }
                     });
             
