@@ -134,7 +134,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
         const html = await page.content(); // Get full HTML content of the page
         //console.log(html); // Print the full HTML to the console
 
-  /*  
+  
          // Execute JavaScript within the page context to access the shadow DOM content
         const widgetContents = await page.evaluate(() => {
             const widgetContents = document.getElementsByClassName('widget-content');
@@ -151,126 +151,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
             return results;
         });
 
-        // Process the results
-        for (const divID of widgetContents) {
-            console.log(divID);
-              /*  
-              const anchorTagsArray: string[] = []; // Specify the type as string[]
 
-            
-            const shadowRootContent = await page.evaluate((divID) => {
-                const divElement = document.getElementById(divID);
-
-                   
-                if (divElement && divElement.shadowRoot) {
-                    const shadowRoot = divElement.shadowRoot;
-                    const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
-            
-                     console.log( "shadowRoot",shadowRoot );
-                     console.log( "shadowRoot.innerHTML",shadowRoot.innerHTML );
-                     console.log( "allAnchorTags", allAnchorTags );
-                    allAnchorTags.forEach(anchorTag => {
-                        if (anchorTag.href && anchorTag.href.includes('clck.')) {
-                            // If the href attribute contains 'clck.', push it to the array
-                            //anchorTagsArray.push(anchorTag.href);
-                            console.log(anchorTag);
-                            console.log(anchorTag.href);
-                        }
-                    });
-            
-                    //return anchorTagsArray;
-                    return allAnchorTags;
-                   // return divElement.shadowRoot.innerHTML;
-                } else {
-                    return 'The div does not contain a shadowRoot.';
-                }
-            }, divID);
-
-            console.log(shadowRootContent);
-
-            */
-/*
-//working fine
-            const shadowRootContent = await page.evaluate((divID) => {
-    const divElement = document.getElementById(divID);
-    const anchorTagsArray: string[] = []; // Specify the type as string[]
-
-
-    if (divElement && divElement.shadowRoot) {
-        const shadowRoot = divElement.shadowRoot;
-        const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
-
-        allAnchorTags.forEach(anchorTag => {
-            if (anchorTag.href && anchorTag.href.includes('clck.')) {
-                anchorTagsArray.push(anchorTag); // Push href attribute to the array
-                
-            }
-        });
-
-        return anchorTagsArray; // Return the array of href attributes
-    } else {
-        return 'The div does not contain a shadowRoot.';
-    }
-}, divID);
-
-console.log(shadowRootContent); // This should print an array of href attributes
-
-            */
-
-            const shadowRootContent = await page.evaluate(async (divID) => {
-    const divElement = document.getElementById(divID);
- const anchorTagsArray: string[] = []; // Specify the type as string[]
-
-    if (divElement && divElement.shadowRoot) {
-        const shadowRoot = divElement.shadowRoot;
-        const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
-
-        // Click on the third link
-        const thirdAnchorTag = allAnchorTags[2]; // Index starts from 0, so 2 is the third link
-        thirdAnchorTag.click();
-        
-        console.log("clicked on this link", thirdAnchorTag.href);
-            
-        // Wait for the page to load for 2 minutes
-       await new Promise(resolve => setTimeout(resolve, 1 * 30 * 1000));
-        //await sleep(  1 * 30 * 1000 );
-        // Take a snapshot and name it as 'pagelink'
-        await page.screenshot({ path: 'pagelink.png', fullPage: true });
-
-        
-        // Return success message
-        return 'Snapshot taken and saved as pagelink.png';
-    } else {
-        return 'The div does not contain a shadowRoot.';
-    }
-}, divID);
-
-console.log(shadowRootContent); // Print the result
-
-
-
-            
-        }
-        */
-
-        // Execute JavaScript within the page context to access the shadow DOM content
-const widgetContents = await page.evaluate(() => {
-    const widgetContents = document.getElementsByClassName('widget-content');
-    const results = [];
-
-    // Process each widget content
-    for (let i = 0; i < widgetContents.length; i++) {
-        const divElement = widgetContents[i];
-        const divID = divElement.querySelector('div')?.id || '';
-
-        // Check if the div contains a shadowRoot
-        if (divID.includes('ScriptRoot')) {
-            results.push(divID);
-        }
-    }
-
-    return results;
-});
+    
 
 // Process the results and perform the click
 for (let i = 0; i <1; i++) {
