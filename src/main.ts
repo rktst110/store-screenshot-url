@@ -160,16 +160,14 @@ const puppeteerCrawler = new PuppeteerCrawler({
             const shadowRootContent = await page.evaluate((divID) => {
                 const divElement = document.getElementById(divID);
 
-                     console.log( divElement.shadowRoot );
-                     console.log( divElement.shadowRoot.innerHTML );
-                
+                   
                 if (divElement && divElement.shadowRoot) {
                     const shadowRoot = divElement.shadowRoot;
                     const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
             
-                     console.log( shadowRoot );
-                     console.log( shadowRoot.innerHTML );
-                     console.log( allAnchorTags );
+                     console.log( "shadowRoot",shadowRoot );
+                     console.log( "shadowRoot.innerHTML",shadowRoot.innerHTML );
+                     console.log( "allAnchorTags", allAnchorTags );
                     allAnchorTags.forEach(anchorTag => {
                         if (anchorTag.href && anchorTag.href.includes('clck.')) {
                             // If the href attribute contains 'clck.', push it to the array
