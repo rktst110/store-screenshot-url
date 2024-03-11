@@ -154,7 +154,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
         // Process the results
         for (const divID of widgetContents) {
             console.log(divID);
-             const anchorTagsArray = [];
+                const anchorTagsArray: string[] = []; // Specify the type as string[]
+
             
             const shadowRootContent = await page.evaluate((divID) => {
                 const divElement = document.getElementById(divID);
