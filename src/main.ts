@@ -177,11 +177,26 @@ for (let i = 0; i <1; i++) {
 
     // Click on the link
     await page.goto(shadowRootContent);
+    
+    console.log('Clicked on link:', shadowRootContent);
+    
+    await sleep(delay);
+    
+     const pageurl = await page.url(); // Get full HTML content of the page
+        console.log("pageurl", pageurl); // Print the full HTML to the console
+    const html = await page.content(); // Get full HTML content of the page
+        //console.log(html); // Print the full HTML to the console
 
     // Take a screenshot
-    await page.screenshot({ path: 'pagelink.png', fullPage: true });
+    //await page.screenshot({ path: 'pagelink.png', fullPage: true });
 
-    console.log('Clicked on link:', shadowRootContent);
+        log.info("Saving screenshot...");
+        const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+        const screenshotBuffer = await page.screenshot({ fullPage: true });
+        await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+        const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+        log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
+
 }
 
 
