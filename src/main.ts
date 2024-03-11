@@ -230,7 +230,7 @@ console.log(shadowRootContent); // This should print an array of href attributes
         thirdAnchorTag.click();
 
         // Wait for the page to load for 2 minutes
-        await new Promise(resolve => setTimeout(resolve, 2 * 60 * 1000));
+        await new Promise(resolve => setTimeout(resolve, 1 * 30 * 1000));
 
         // Take a snapshot and name it as 'pagelink'
         await page.screenshot({ path: 'pagelink.png', fullPage: true });
