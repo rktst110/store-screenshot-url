@@ -184,8 +184,8 @@ for (let i = 0; i <1; i++) {
     
      const pageurl = await page.url(); // Get full HTML content of the page
         console.log("pageurl", pageurl); // Print the full HTML to the console
-    const html = await page.content(); // Get full HTML content of the page
-        //console.log(html); // Print the full HTML to the console
+    const pagecontent = await page.content(); // Get full HTML content of the page
+        console.log("pagecontent", pagecontent); // Print the full HTML to the console
 
     // Take a screenshot
     //await page.screenshot({ path: 'pagelink.png', fullPage: true });
