@@ -141,7 +141,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
         // Retrieve anchor tags with href containing 'clck.'
         const anchorTags = await page.evaluate(() => {
             const shadowRoots = document.querySelectorAll('.widget-content div[id^="ScriptRoot"]');
-            const anchorTagsArray = [];
+            const anchorTagsArray: string[] = []; // Specify the type as string[]
+
 
             shadowRoots.forEach(shadowRoot => {
                 const anchorTags = shadowRoot.querySelectorAll('a[href*="clck."]');
