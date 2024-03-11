@@ -242,10 +242,7 @@ if (letMeInLink) {
         await page.mouse.click(clickX, clickY);
 
         // Wait for navigation to complete
-        await page.waitForNavigation();
-
-        // Take a screenshot
-        await page.screenshot({ path: 'let_me_in.png', fullPage: true });
+        //await page.waitForNavigation();
 
         console.log('Clicked on "Let me in!" button');
     } else {
