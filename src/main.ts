@@ -185,15 +185,38 @@ for (let i = 0; i <1; i++) {
      var pageurl = await page.url(); // Get full HTML content of the page
         console.log("pageurl", pageurl); // Print the full HTML to the console
     var pagecontent = await page.content(); // Get full HTML content of the page
-        console.log("pagecontent", pagecontent); // Print the full HTML to the console
+      //  console.log("pagecontent", pagecontent); // Print the full HTML to the console
+
     
+// Extract the href attribute of the "Let me in!" button
+const letMeInLink = await page.evaluate(() => {
+    const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+    return letMeInButton.href;
+});
+
+// Print the link of the "Let me in!" button
+console.log('Link of "Let me in!" button:', letMeInLink);
+
     
 // Wait for the "Let me in!" button to appear
-await page.waitForSelector('a[href*="/ghits/"]');
+//await page.waitForSelector('a[href*="/ghits/"]');
 
 // Click on the link
-await page.click('a[href*="/ghits/"]');
+//await page.click('a[href*="/ghits/"]');
 
+    
+// Scroll to the button to ensure it's in view
+await page.evaluate(() => {
+    const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+    letMeInButton.scrollIntoView();
+});
+
+// Click on the link
+await Promise.all([
+    page.waitForNavigation(), // Wait for navigation to complete
+    page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+]);
+    
 // Wait for the page navigation to complete
 //await page.waitForNavigation();
 
