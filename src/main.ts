@@ -187,16 +187,43 @@ for (let i = 0; i <1; i++) {
     var pagecontent = await page.content(); // Get full HTML content of the page
       //  console.log("pagecontent", pagecontent); // Print the full HTML to the console
 
-    
+
+// Wait for the "Let me in!" button to appear
+await page.waitForSelector('a[href*="/ghits/"]');
+
 // Extract the href attribute of the "Let me in!" button
 const letMeInLink = await page.evaluate(() => {
     const letMeInButton = document.querySelector('a[href*="/ghits/"]');
-    return letMeInButton.href;
+    return letMeInButton ? letMeInButton.href : null; // Perform null check
 });
 
-// Print the link of the "Let me in!" button
-console.log('Link of "Let me in!" button:', letMeInLink);
+if (letMeInLink) {
+    // Print the link of the "Let me in!" button
+    console.log('Link of "Let me in!" button:', letMeInLink);
 
+    // Scroll to the button to ensure it's in view
+    await page.evaluate(() => {
+        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+        if (letMeInButton) {
+            letMeInButton.scrollIntoView();
+        }
+    });
+
+    // Click on the link
+    await Promise.all([
+       // page.waitForNavigation(), // Wait for navigation to complete
+        page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+    ]);
+
+    // Take a screenshot
+    await page.screenshot({ path: 'let_me_in.png', fullPage: true });
+
+    console.log('Clicked on "Let me in!" button');
+} else {
+    console.log('Unable to find "Let me in!" button');
+}
+
+    
     
 // Wait for the "Let me in!" button to appear
 //await page.waitForSelector('a[href*="/ghits/"]');
@@ -204,23 +231,10 @@ console.log('Link of "Let me in!" button:', letMeInLink);
 // Click on the link
 //await page.click('a[href*="/ghits/"]');
 
-    
-// Scroll to the button to ensure it's in view
-await page.evaluate(() => {
-    const letMeInButton = document.querySelector('a[href*="/ghits/"]');
-    letMeInButton.scrollIntoView();
-});
-
-// Click on the link
-await Promise.all([
-    page.waitForNavigation(), // Wait for navigation to complete
-    page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
-]);
-    
 // Wait for the page navigation to complete
 //await page.waitForNavigation();
 
-console.log('Clicked on "Let me in!" button');
+//console.log('Clicked on "Let me in!" button');
 
   
    await sleep(delay);
