@@ -136,44 +136,36 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
 
          // Execute JavaScript within the page context to access the shadow DOM content
-        const widgetContents = await page.evaluate(() => {
-            const widgetContents = document.getElementsByClassName('widget-content');
-            const results = [];
+     
+        
+        // Retrieve anchor tags with href containing 'clck.'
+        const anchorTags = await page.evaluate(() => {
+            const shadowRoots = document.querySelectorAll('.widget-content div[id^="ScriptRoot"]');
+            const anchorTagsArray = [];
 
-            for (let i = 0; i < widgetContents.length; i++) {
-                const divID = '';
-                if (widgetContents[i].getElementsByTagName('div')[0].id.includes('ScriptRoot')) {
-                    const divID = widgetContents[i].getElementsByTagName('div')[0].id;
-                    results.push(divID);
-                }
-            }
+            shadowRoots.forEach(shadowRoot => {
+                const anchorTags = shadowRoot.querySelectorAll('a[href*="clck."]');
 
-            return results;
+                anchorTags.forEach(anchorTag => {
+                    anchorTagsArray.push(anchorTag.outerHTML);
+                });
+            });
+
+            return anchorTagsArray;
         });
 
-        // Process the results
-        for (const divID of widgetContents) {
-            console.log(divID);
+        // Log or process the anchor tags as needed
+        console.log(anchorTags);
 
-            const shadowRootContent = await page.evaluate((divID) => {
-                const divElement = document.getElementById(divID);
 
-                if (divElement && divElement.shadowRoot) {
-                    return divElement.shadowRoot.innerHTML;
-                } else {
-                    return 'The div does not contain a shadowRoot.';
-                }
-            }, divID);
-
-            console.log(shadowRootContent);
-        }
+        
 
 
         await Actor.pushData({
             url: page.url(),
             screenshotUrl,
             screenshotKey,
-            html, // Add HTML content to the output data
+           // html, // Add HTML content to the output data
         });
     },
 });
