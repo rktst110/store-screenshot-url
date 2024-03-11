@@ -134,7 +134,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
         const html = await page.content(); // Get full HTML content of the page
         //console.log(html); // Print the full HTML to the console
 
-
+  /*  
          // Execute JavaScript within the page context to access the shadow DOM content
         const widgetContents = await page.evaluate(() => {
             const widgetContents = document.getElementsByClassName('widget-content');
@@ -251,6 +251,57 @@ console.log(shadowRootContent); // Print the result
 
             
         }
+        */
+
+        // Execute JavaScript within the page context to access the shadow DOM content
+const widgetContents = await page.evaluate(() => {
+    const widgetContents = document.getElementsByClassName('widget-content');
+    const results = [];
+
+    // Process each widget content
+    for (let i = 0; i < widgetContents.length; i++) {
+        const divElement = widgetContents[i];
+        const divID = divElement.querySelector('div')?.id || '';
+
+        // Check if the div contains a shadowRoot
+        if (divID.includes('ScriptRoot')) {
+            results.push(divID);
+        }
+    }
+
+    return results;
+});
+
+// Process the results and perform the click
+for (let i = 0; i <1; i++) {
+    const divID = widgetContents[i];
+
+    console.log(divID);
+
+    // Access the shadowRoot and find the link
+    const shadowRootContent = await page.evaluate(async (divID) => {
+        const divElement = document.getElementById(divID);
+
+        if (divElement && divElement.shadowRoot) {
+            const shadowRoot = divElement.shadowRoot;
+            const allAnchorTags = shadowRoot.querySelectorAll('a');
+
+            // Return the href of the third anchor tag
+            return allAnchorTags[2].href;
+        } else {
+            return 'The div does not contain a shadowRoot.';
+        }
+    }, divID);
+
+    // Click on the link
+    await page.goto(shadowRootContent);
+
+    // Take a screenshot
+    await page.screenshot({ path: 'pagelink.png', fullPage: true });
+
+    console.log('Clicked on link:', shadowRootContent);
+}
+
 
 
         await Actor.pushData({
