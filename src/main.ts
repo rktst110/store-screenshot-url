@@ -154,12 +154,24 @@ const puppeteerCrawler = new PuppeteerCrawler({
         // Process the results
         for (const divID of widgetContents) {
             console.log(divID);
-
+             const anchorTagsArray = [];
+            
             const shadowRootContent = await page.evaluate((divID) => {
                 const divElement = document.getElementById(divID);
 
                 if (divElement && divElement.shadowRoot) {
-                    return divElement.shadowRoot.innerHTML;
+                    const shadowRoot = divElement.shadowRoot;
+                    const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
+            
+                    allAnchorTags.forEach(anchorTag => {
+                        if (anchorTag.href && anchorTag.href.includes('clck.')) {
+                            // If the href attribute contains 'clck.', push it to the array
+                            anchorTagsArray.push(anchorTag.href);
+                        }
+                    });
+            
+                    return anchorTagsArray;
+                   // return divElement.shadowRoot.innerHTML;
                 } else {
                     return 'The div does not contain a shadowRoot.';
                 }
