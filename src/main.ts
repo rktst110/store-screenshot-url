@@ -164,6 +164,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
                     const shadowRoot = divElement.shadowRoot;
                     const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
             
+                     console.log( allAnchorTags );
                     allAnchorTags.forEach(anchorTag => {
                         if (anchorTag.href && anchorTag.href.includes('clck.')) {
                             // If the href attribute contains 'clck.', push it to the array
@@ -173,7 +174,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
                         }
                     });
             
-                    return anchorTagsArray;
+                    //return anchorTagsArray;
+                    return allAnchorTags;
                    // return divElement.shadowRoot.innerHTML;
                 } else {
                     return 'The div does not contain a shadowRoot.';
