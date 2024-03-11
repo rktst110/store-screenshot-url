@@ -213,7 +213,7 @@ if (letMeInLink) {
 
     // Click on the link
     await Promise.all([
-        page.waitForNavigation(), // Wait for navigation to complete
+        //page.waitForNavigation(), // Wait for navigation to complete
         page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
     ]);
 
