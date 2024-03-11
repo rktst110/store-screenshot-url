@@ -210,13 +210,17 @@ if (letMeInLink) {
             letMeInButton.scrollIntoView();
         }
     });
+    
+        // Click on the link
+    await page.goto(letMeInLink);
+    
 /*
     // Click on the link
     await Promise.all([
         //page.waitForNavigation(), // Wait for navigation to complete
         page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
     ]);
-*/
+
 
 
     
@@ -252,7 +256,8 @@ if (letMeInLink) {
                     
     // Take a screenshot
     //await page.screenshot({ path: 'let_me_in.png', fullPage: true });
-
+*/
+    
     console.log('Clicked on "Let me in!" button');
 } else {
     console.log('Unable to find "Let me in!" button');
