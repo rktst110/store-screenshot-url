@@ -189,7 +189,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
             console.log(shadowRootContent);
 
             */
-
+/*
+//working fine
             const shadowRootContent = await page.evaluate((divID) => {
     const divElement = document.getElementById(divID);
     const anchorTagsArray: string[] = []; // Specify the type as string[]
@@ -213,6 +214,35 @@ const puppeteerCrawler = new PuppeteerCrawler({
 }, divID);
 
 console.log(shadowRootContent); // This should print an array of href attributes
+
+            */
+
+            const shadowRootContent = await page.evaluate(async (divID) => {
+    const divElement = document.getElementById(divID);
+ const anchorTagsArray: string[] = []; // Specify the type as string[]
+
+    if (divElement && divElement.shadowRoot) {
+        const shadowRoot = divElement.shadowRoot;
+        const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
+
+        // Click on the third link
+        const thirdAnchorTag = allAnchorTags[2]; // Index starts from 0, so 2 is the third link
+        thirdAnchorTag.click();
+
+        // Wait for the page to load for 2 minutes
+        await new Promise(resolve => setTimeout(resolve, 2 * 60 * 1000));
+
+        // Take a snapshot and name it as 'pagelink'
+        await page.screenshot({ path: 'pagelink.png', fullPage: true });
+
+        // Return success message
+        return 'Snapshot taken and saved as pagelink.png';
+    } else {
+        return 'The div does not contain a shadowRoot.';
+    }
+}, divID);
+
+console.log(shadowRootContent); // Print the result
             
         }
 
