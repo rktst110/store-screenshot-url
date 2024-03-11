@@ -228,12 +228,8 @@ console.log(shadowRootContent); // This should print an array of href attributes
         // Click on the third link
         const thirdAnchorTag = allAnchorTags[2]; // Index starts from 0, so 2 is the third link
         thirdAnchorTag.click();
-
-        // Wait for the page to load for 2 minutes
-        await new Promise(resolve => setTimeout(resolve, 1 * 30 * 1000));
-
-        // Take a snapshot and name it as 'pagelink'
-        await page.screenshot({ path: 'pagelink.png', fullPage: true });
+        
+        console.log("clicked on this link", thirdAnchorTag.href);
 
         // Return success message
         return 'Snapshot taken and saved as pagelink.png';
@@ -243,6 +239,15 @@ console.log(shadowRootContent); // This should print an array of href attributes
 }, divID);
 
 console.log(shadowRootContent); // Print the result
+
+
+            
+        // Wait for the page to load for 2 minutes
+       // await new Promise(resolve => setTimeout(resolve, 1 * 30 * 1000));
+await sleep(  1 * 30 * 1000 );
+        // Take a snapshot and name it as 'pagelink'
+        await page.screenshot({ path: 'pagelink.png', fullPage: true });
+
             
         }
 
