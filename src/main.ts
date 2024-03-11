@@ -148,6 +148,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
                 const anchorTags = shadowRoot.querySelectorAll('a[href*="clck."]');
 
                 anchorTags.forEach(anchorTag => {
+                    console.log(anchorTag)
                     anchorTagsArray.push(anchorTag.outerHTML);
                 });
             });
