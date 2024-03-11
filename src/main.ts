@@ -201,7 +201,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
         allAnchorTags.forEach(anchorTag => {
             if (anchorTag.href && anchorTag.href.includes('clck.')) {
-                anchorTagsArray.push(anchorTag.href); // Push href attribute to the array
+                anchorTagsArray.push(anchorTag); // Push href attribute to the array
+                
             }
         });
 
