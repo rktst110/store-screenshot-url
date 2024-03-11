@@ -192,7 +192,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
             const shadowRootContent = await page.evaluate((divID) => {
     const divElement = document.getElementById(divID);
-    const anchorTagsArray = [];
+    const anchorTagsArray: string[] = []; // Specify the type as string[]
+
 
     if (divElement && divElement.shadowRoot) {
         const shadowRoot = divElement.shadowRoot;
