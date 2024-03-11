@@ -53,12 +53,12 @@ const requestHandlerTimeoutSecs = calculateRequestHandlerTimeoutSecs(
                             BrowserName.safari,
                         ],
                         devices: [
-                            DeviceCategory.mobile,
+                            DeviceCategory.desktop,
                         ],
                          operatingSystems: [
-                            OperatingSystemsName.android,
-                             OperatingSystemsName.ios,
-        					 OperatingSystemsName.windows,
+                             OperatingSystemsName.windows,
+                             OperatingSystemsName.linux,
+                             OperatingSystemsName.macos,
                         ],
                         //locales: [ 'en-US', ],
                     },
@@ -160,6 +160,9 @@ const puppeteerCrawler = new PuppeteerCrawler({
             const shadowRootContent = await page.evaluate((divID) => {
                 const divElement = document.getElementById(divID);
 
+                     console.log( divElement.shadowRoot );
+                     console.log( divElement.shadowRoot.innerHTML );
+                
                 if (divElement && divElement.shadowRoot) {
                     const shadowRoot = divElement.shadowRoot;
                     const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
