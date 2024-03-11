@@ -191,9 +191,11 @@ for (let i = 0; i <1; i++) {
 // Wait for the "Let me in!" button to appear
 await page.waitForSelector('a[href*="/ghits/"]');
 
+
+    
 // Extract the href attribute of the "Let me in!" button
 const letMeInLink = await page.evaluate(() => {
-    const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+    const letMeInButton = document.querySelector('a[href*="/ghits/"]') as HTMLAnchorElement; // Cast to HTMLAnchorElement
     return letMeInButton ? letMeInButton.href : null; // Perform null check
 });
 
@@ -211,7 +213,7 @@ if (letMeInLink) {
 
     // Click on the link
     await Promise.all([
-       // page.waitForNavigation(), // Wait for navigation to complete
+        page.waitForNavigation(), // Wait for navigation to complete
         page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
     ]);
 
@@ -223,6 +225,7 @@ if (letMeInLink) {
     console.log('Unable to find "Let me in!" button');
 }
 
+    
     
     
 // Wait for the "Let me in!" button to appear
