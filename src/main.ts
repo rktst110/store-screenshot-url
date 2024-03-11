@@ -186,7 +186,22 @@ for (let i = 0; i <1; i++) {
         console.log("pageurl", pageurl); // Print the full HTML to the console
     const pagecontent = await page.content(); // Get full HTML content of the page
         console.log("pagecontent", pagecontent); // Print the full HTML to the console
+    
+   await sleep(delay);
+    
+// Wait for the "Let me in!" button to appear
+await page.waitForSelector('a[href*="/ghits/"]');
 
+// Click on the link
+await page.click('a[href*="/ghits/"]');
+
+// Wait for the page navigation to complete
+await page.waitForNavigation();
+
+console.log('Clicked on "Let me in!" button');
+
+
+    
     // Take a screenshot
     //await page.screenshot({ path: 'pagelink.png', fullPage: true });
 
