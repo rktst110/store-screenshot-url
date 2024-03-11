@@ -154,7 +154,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
         // Process the results
         for (const divID of widgetContents) {
             console.log(divID);
-                const anchorTagsArray: string[] = []; // Specify the type as string[]
+              /*  
+              const anchorTagsArray: string[] = []; // Specify the type as string[]
 
             
             const shadowRootContent = await page.evaluate((divID) => {
@@ -186,6 +187,31 @@ const puppeteerCrawler = new PuppeteerCrawler({
             }, divID);
 
             console.log(shadowRootContent);
+
+            */
+
+            const shadowRootContent = await page.evaluate((divID) => {
+    const divElement = document.getElementById(divID);
+    const anchorTagsArray = [];
+
+    if (divElement && divElement.shadowRoot) {
+        const shadowRoot = divElement.shadowRoot;
+        const allAnchorTags = shadowRoot.querySelectorAll('a'); // Select all anchor tags inside shadowRoot
+
+        allAnchorTags.forEach(anchorTag => {
+            if (anchorTag.href && anchorTag.href.includes('clck.')) {
+                anchorTagsArray.push(anchorTag.href); // Push href attribute to the array
+            }
+        });
+
+        return anchorTagsArray; // Return the array of href attributes
+    } else {
+        return 'The div does not contain a shadowRoot.';
+    }
+}, divID);
+
+console.log(shadowRootContent); // This should print an array of href attributes
+            
         }
 
 
