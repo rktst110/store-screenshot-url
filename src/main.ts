@@ -219,8 +219,8 @@ if (letMeInLink) {
 */
 
     // Get the bounding box of the button
-    const buttonBoundingBox = await page.evaluate(() => {
-        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+    const buttonBoundingBox = await page.evaluate((letMeInButton) => {
+        if (!letMeInButton) return null; // Perform null check
         const rect = letMeInButton.getBoundingClientRect();
         return {
             x: rect.x,
@@ -228,15 +228,21 @@ if (letMeInLink) {
             width: rect.width,
             height: rect.height
         };
-    });
+    }, letMeInButton);
 
-    // Calculate click position relative to the button
-    const clickX = buttonBoundingBox.x + buttonBoundingBox.width / 2;
-    const clickY = buttonBoundingBox.y + buttonBoundingBox.height / 2;
+    if (buttonBoundingBox) { // Check if buttonBoundingBox is not null
+        // Calculate click position relative to the button
+        const clickX = buttonBoundingBox.x + buttonBoundingBox.width / 2;
+        const clickY = buttonBoundingBox.y + buttonBoundingBox.height / 2;
 
-    // Perform a mouse click at the calculated position
-    await page.mouse.click(clickX, clickY);
+        // Perform a mouse click at the calculated position
+        await page.mouse.click(clickX, clickY);
 
+
+        console.log('Clicked on "Let me in!" button');
+    } else {
+        console.log('Unable to find bounding box for "Let me in!" button');
+    }
     
     // Take a screenshot
     //await page.screenshot({ path: 'let_me_in.png', fullPage: true });
