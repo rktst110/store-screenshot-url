@@ -150,35 +150,45 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
             return results;
         });
+        
 
 
+        
 // Process the results and perform the click
 for (let i = 0; i < 1; i++) {
     const divID = widgetContents[i];
 
     console.log(divID);
 
-    await page.$eval(`#${divID}`, (widgetContent) => {
-        const shadowRoot = widgetContent.shadowRoot;
-        if (shadowRoot) {
-            const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement | null;
-            console.log("anchor", anchor)
-            if (anchor) {
-                anchor.click();
+    await page.evaluate(() => {
+        const widgetContent = document.querySelector('.widget-content');
+        if (widgetContent) {
+            const shadowRoot = widgetContent.getElementsByTagName('div')[0].shadowRoot;
+            if (shadowRoot) {
+                const anchor = shadowRoot.querySelector('div.mcimg > a');
+                 console.log("anchor", anchor)
+                if (anchor) {
+                    anchor.click();
+                } else {
+                    console.error('Anchor element not found inside shadow root.');
+                }
             } else {
-                console.error('Anchor element not found inside shadow root.');
+                console.error('Shadow root not found.');
             }
         } else {
-            console.error('Shadow root not found for widget content.');
+            console.error('Widget content not found.');
         }
     });
 
     await sleep(delay);
 
-    const pageurl = await page.url();
-    console.log("pageurl", pageurl);
-    const pagecontent = await page.content();
-    console.log("pagecontent", pagecontent);
+    const pageurl = await page.url(); // Get full HTML content of the page
+    console.log("pageurl", pageurl); // Print the full HTML to the console
+    const pagecontent = await page.content(); // Get full HTML content of the page
+    console.log("pagecontent", pagecontent); // Print the full HTML to the console
+
+    // Take a screenshot
+    //await page.screenshot({ path: 'pagelink.png', fullPage: true });
 
     log.info("Saving screenshot...");
     const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
@@ -187,6 +197,7 @@ for (let i = 0; i < 1; i++) {
     const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
     log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 }
+
 
 
 
