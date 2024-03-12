@@ -154,187 +154,23 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
 
 // Process the results and perform the click
-for (let i = 0; i < 1; i++) {
+for (let i = 0; i <1; i++) {
     const divID = widgetContents[i];
 
     console.log(divID);
 
-    // Access the shadowRoot and find the link
-    const shadowRootContent = await page.evaluate(async (divID) => {
-        const divElement = document.getElementById(divID);
-
-        if (divElement && divElement.shadowRoot) {
-            const shadowRoot = divElement.shadowRoot;
-            const thirdAnchorTag = shadowRoot.querySelectorAll('a')[0]; // Select the third anchor tag
-
-            // Return the href of the third anchor tag
-            return thirdAnchorTag.href;
-        } else {
-            return null;
-        }
-    }, divID);
-
-    if (shadowRootContent) {
-        // Click on the link
-        await page.$eval('css=shadowRootCSSSelector a[href="' + shadowRootContent + '"]', (anchor) => {
-            anchor.click();
-        });
-
-        console.log('Clicked on the link inside Shadow DOM');
+await page.$eval('.widget-content:first-child > div:first-child', (widgetContent) => {
+    const shadowRoot = widgetContent.shadowRoot;
+    const anchor = shadowRoot.querySelector('div.mcimg > a');
+    console.log("anchor", anchor)
+    if (anchor) {
+        anchor.click();
     } else {
-        console.log('Unable to find the link inside Shadow DOM');
+        console.error('Anchor element not found inside shadow root.');
     }
-
-
-    
-   await sleep(delay);
-    
-     var pageurl = await page.url(); // Get full HTML content of the page
-        console.log("pageurl", pageurl); // Print the full HTML to the console
-    var pagecontent = await page.content(); // Get full HTML content of the page
-        console.log("pagecontent", pagecontent); // Print the full HTML to the console
-    
-    
-    // Take a screenshot
-    //await page.screenshot({ path: 'pagelink.png', fullPage: true });
-
-        log.info("Saving screenshot...");
-        const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
-        const screenshotBuffer = await page.screenshot({ fullPage: true });
-        await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
-        const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
-        log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
-    
-    
-}
-
-
-// Process the results and perform the click
-for (let i = 0; i <0; i++) {
-    const divID = widgetContents[i];
-
-    console.log(divID);
-
-    // Access the shadowRoot and find the link
-    const shadowRootContent = await page.evaluate(async (divID) => {
-        const divElement = document.getElementById(divID);
-
-        if (divElement && divElement.shadowRoot) {
-            const shadowRoot = divElement.shadowRoot;
-            const allAnchorTags = shadowRoot.querySelectorAll('a');
-
-            // Return the href of the third anchor tag
-            //return allAnchorTags[2].href;
-
-            
-        } else {
-            return 'The div does not contain a shadowRoot.';
-        }
-    }, divID);
-
-    // Click on the link
-    await page.goto(shadowRootContent);
-    
-    console.log('Clicked on link:', shadowRootContent);
-    
-    await sleep(delay);
-    
-     var pageurl = await page.url(); // Get full HTML content of the page
-        console.log("pageurl", pageurl); // Print the full HTML to the console
-    var pagecontent = await page.content(); // Get full HTML content of the page
-      //  console.log("pagecontent", pagecontent); // Print the full HTML to the console
-
-
-// Wait for the "Let me in!" button to appear
-await page.waitForSelector('a[href*="/ghits/"]');
-
-
-    
-// Extract the href attribute of the "Let me in!" button
-const letMeInLink = await page.evaluate(() => {
-    const letMeInButton = document.querySelector('a[href*="/ghits/"]') as HTMLAnchorElement; // Cast to HTMLAnchorElement
-    return letMeInButton ? letMeInButton.href : null; // Perform null check
 });
 
-if (letMeInLink) {
-    // Print the link of the "Let me in!" button
-    console.log('Link of "Let me in!" button:', letMeInLink);
-
-    // Scroll to the button to ensure it's in view
-    await page.evaluate(() => {
-        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
-        if (letMeInButton) {
-            letMeInButton.scrollIntoView();
-        }
-    });
     
-        // Click on the link
-    await page.goto(letMeInLink);
-    
-/*
-    // Click on the link
-    await Promise.all([
-        //page.waitForNavigation(), // Wait for navigation to complete
-        page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
-    ]);
-
-
-
-    
-    // Get the bounding box of the button
-    const buttonBoundingBox = await page.evaluate(() => {
-        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
-        if (!letMeInButton) return null; // Perform null check
-        const rect = letMeInButton.getBoundingClientRect();
-        return {
-            x: rect.x,
-            y: rect.y,
-            width: rect.width,
-            height: rect.height
-        };
-    });
-
-    if (buttonBoundingBox) { // Check if buttonBoundingBox is not null
-        // Calculate click position relative to the button
-        const clickX = buttonBoundingBox.x + buttonBoundingBox.width / 2;
-        const clickY = buttonBoundingBox.y + buttonBoundingBox.height / 2;
-
-        // Perform a mouse click at the calculated position
-        await page.mouse.click(clickX, clickY);
-
-        // Wait for navigation to complete
-        //await page.waitForNavigation();
-
-        console.log('Clicked on "Let me in!" button');
-    } else {
-        console.log('Unable to find bounding box for "Let me in!" button');
-    }
-    
-                    
-    // Take a screenshot
-    //await page.screenshot({ path: 'let_me_in.png', fullPage: true });
-*/
-    
-    console.log('Clicked on "Let me in!" button');
-} else {
-    console.log('Unable to find "Let me in!" button');
-}
-
-    
-    
-    
-// Wait for the "Let me in!" button to appear
-//await page.waitForSelector('a[href*="/ghits/"]');
-
-// Click on the link
-//await page.click('a[href*="/ghits/"]');
-
-// Wait for the page navigation to complete
-//await page.waitForNavigation();
-
-//console.log('Clicked on "Let me in!" button');
-
-  
    await sleep(delay);
     
      var pageurl = await page.url(); // Get full HTML content of the page
