@@ -212,12 +212,15 @@ for (let i = 0; i < 1; i++) {
    
 
     const clickedLink = await page.evaluate(() => {
-         console.log(divID);
+         
         const widgetContent = document.querySelector('.widget-content');
+        console.log("widgetContent", widgetContent);
         if (widgetContent) {
             const shadowRoot = widgetContent.getElementsByTagName('div')[0].shadowRoot;
+            console.log("shadowRoot", shadowRoot);
             if (shadowRoot) {
                 const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement | null;
+                console.log("anchor", anchor);
                 if (anchor) {
                     anchor.click();
                     return anchor.href;
