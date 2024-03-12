@@ -156,7 +156,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
 
     await sleep(delay);
 
-        
+  /*      
 // Process the results and perform the click
 for (let i = 0; i < 1; i++) {
     const divID = widgetContents[i];
@@ -202,7 +202,55 @@ for (let i = 0; i < 1; i++) {
     const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
     log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 }
+*/
 
+        
+// Process the results and perform the click
+for (let i = 0; i < 1; i++) {
+    const divID = widgetContents[i];
+
+    console.log(divID);
+
+    const anchorHref = await page.evaluate((divID) => {
+        const divElement = document.getElementById(divID);
+        if (divElement && divElement.shadowRoot) {
+            const anchor = divElement.shadowRoot.querySelector('div.mcimg > a');
+            if (anchor) {
+                anchor.click();
+                return anchor.href;
+            } else {
+                console.error('Anchor element not found inside shadow root.');
+                return null;
+            }
+        } else {
+            console.error('Shadow root not found.');
+            return null;
+        }
+    }, divID);
+
+    if (anchorHref) {
+        console.log('Clicked on anchor with href:', anchorHref);
+    } else {
+        console.log('Failed to click on anchor inside shadow root.');
+    }
+
+    await sleep(delay);
+
+    const pageurl = await page.url(); // Get full HTML content of the page
+    console.log("pageurl", pageurl); // Print the full HTML to the console
+    const pagecontent = await page.content(); // Get full HTML content of the page
+    console.log("pagecontent", pagecontent); // Print the full HTML to the console
+
+    // Take a screenshot
+    //await page.screenshot({ path: 'pagelink.png', fullPage: true });
+
+    log.info("Saving screenshot...");
+    const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+    const screenshotBuffer = await page.screenshot({ fullPage: true });
+    await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+    const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+    log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
+}
 
 
 
