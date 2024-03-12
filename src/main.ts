@@ -226,8 +226,6 @@ for (let i = 0; i <0; i++) {
             // Return the href of the third anchor tag
             //return allAnchorTags[2].href;
 
-            const button = await page.querySelector('>>> #my-button');
-await button.click();
             
         } else {
             return 'The div does not contain a shadowRoot.';
