@@ -165,7 +165,7 @@ for (let i = 0; i < 1; i++) {
         if (widgetContent) {
             const shadowRoot = widgetContent.getElementsByTagName('div')[0].shadowRoot;
             if (shadowRoot) {
-                const anchor = shadowRoot.querySelector('div.mcimg > a');
+                const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement;
                  console.log("anchor", anchor)
                 if (anchor) {
                     anchor.click();
