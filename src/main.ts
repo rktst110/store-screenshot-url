@@ -135,6 +135,8 @@ const puppeteerCrawler = new PuppeteerCrawler({
         //console.log(html); // Print the full HTML to the console
 
   
+    await sleep(delay);
+        
          // Execute JavaScript within the page context to access the shadow DOM content
         const widgetContents = await page.evaluate(() => {
             const widgetContents = document.getElementsByClassName('widget-content');
@@ -152,6 +154,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
         });
         
 
+    await sleep(delay);
 
         
 // Process the results and perform the click
@@ -162,21 +165,23 @@ for (let i = 0; i < 1; i++) {
 
     await page.evaluate(() => {
         const widgetContent = document.querySelector('.widget-content');
+        console.log("widgetContent", widgetContent)
         if (widgetContent) {
             const shadowRoot = widgetContent.getElementsByTagName('div')[0].shadowRoot;
+            console.log("shadowRoot", shadowRoot)
             if (shadowRoot) {
                 const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement;
                  console.log("anchor", anchor)
                 if (anchor) {
                     anchor.click();
                 } else {
-                    console.error('Anchor element not found inside shadow root.');
+                    console.log('Anchor element not found inside shadow root.');
                 }
             } else {
-                console.error('Shadow root not found.');
+                console.log('Shadow root not found.');
             }
         } else {
-            console.error('Widget content not found.');
+            console.log('Widget content not found.');
         }
     });
 
