@@ -204,38 +204,47 @@ for (let i = 0; i < 1; i++) {
 }
 */
 
-        
+      
 // Process the results and perform the click
 for (let i = 0; i < 1; i++) {
     const divID = widgetContents[i];
 
-    console.log(divID);
+   
 
-    const anchorHref = await page.evaluate((divID) => {
-        const divElement = document.getElementById(divID);
-        if (divElement && divElement.shadowRoot) {
-            const anchor = divElement.shadowRoot.querySelector('div.mcimg > a');
-            if (anchor) {
-                anchor.click();
-                return anchor.href;
+    const clickedLink = await page.evaluate(() => {
+         console.log(divID);
+        const widgetContent = document.querySelector('.widget-content');
+        if (widgetContent) {
+            const shadowRoot = widgetContent.getElementsByTagName('div')[0].shadowRoot;
+            if (shadowRoot) {
+                const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement | null;
+                if (anchor) {
+                    anchor.click();
+                    return anchor.href;
+                } else {
+                    console.error('Anchor element not found inside shadow root.');
+                    return null;
+                }
             } else {
-                console.error('Anchor element not found inside shadow root.');
+                console.error('Shadow root not found.');
                 return null;
             }
         } else {
-            console.error('Shadow root not found.');
+            console.error('Widget content not found.');
             return null;
         }
-    }, divID);
+    });
 
-    if (anchorHref) {
-        console.log('Clicked on anchor with href:', anchorHref);
+    if (clickedLink) {
+        console.log("Clicked link:", clickedLink);
+
+        // Continue with your code, such as taking a screenshot or performing other actions
     } else {
-        console.log('Failed to click on anchor inside shadow root.');
+        console.log("Failed to click the link.");
     }
 
+    // Sleep if needed
     await sleep(delay);
-
     const pageurl = await page.url(); // Get full HTML content of the page
     console.log("pageurl", pageurl); // Print the full HTML to the console
     const pagecontent = await page.content(); // Get full HTML content of the page
