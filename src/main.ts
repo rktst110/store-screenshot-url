@@ -152,10 +152,65 @@ const puppeteerCrawler = new PuppeteerCrawler({
         });
 
 
-    
 
 // Process the results and perform the click
-for (let i = 0; i <1; i++) {
+for (let i = 0; i < 1; i++) {
+    const divID = widgetContents[i];
+
+    console.log(divID);
+
+    // Access the shadowRoot and find the link
+    const shadowRootContent = await page.evaluate(async (divID) => {
+        const divElement = document.getElementById(divID);
+
+        if (divElement && divElement.shadowRoot) {
+            const shadowRoot = divElement.shadowRoot;
+            const thirdAnchorTag = shadowRoot.querySelectorAll('a')[0]; // Select the third anchor tag
+
+            // Return the href of the third anchor tag
+            return thirdAnchorTag.href;
+        } else {
+            return null;
+        }
+    }, divID);
+
+    if (shadowRootContent) {
+        // Click on the link
+        await page.$eval('css=shadowRootCSSSelector a[href="' + shadowRootContent + '"]', (anchor) => {
+            anchor.click();
+        });
+
+        console.log('Clicked on the link inside Shadow DOM');
+    } else {
+        console.log('Unable to find the link inside Shadow DOM');
+    }
+
+
+    
+   await sleep(delay);
+    
+     var pageurl = await page.url(); // Get full HTML content of the page
+        console.log("pageurl", pageurl); // Print the full HTML to the console
+    var pagecontent = await page.content(); // Get full HTML content of the page
+        console.log("pagecontent", pagecontent); // Print the full HTML to the console
+    
+    
+    // Take a screenshot
+    //await page.screenshot({ path: 'pagelink.png', fullPage: true });
+
+        log.info("Saving screenshot...");
+        const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+        const screenshotBuffer = await page.screenshot({ fullPage: true });
+        await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+        const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+        log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
+    
+    
+}
+
+
+// Process the results and perform the click
+for (let i = 0; i <0; i++) {
     const divID = widgetContents[i];
 
     console.log(divID);
@@ -169,7 +224,11 @@ for (let i = 0; i <1; i++) {
             const allAnchorTags = shadowRoot.querySelectorAll('a');
 
             // Return the href of the third anchor tag
-            return allAnchorTags[2].href;
+            //return allAnchorTags[2].href;
+
+            const button = await page.querySelector('>>> #my-button');
+await button.click();
+            
         } else {
             return 'The div does not contain a shadowRoot.';
         }
