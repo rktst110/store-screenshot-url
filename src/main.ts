@@ -243,6 +243,7 @@ for (let i = 0; i < 1; i++) {
 
     if (clickedLink) {
         console.log("Clicked link:", clickedLink);
+        await page.goto(clickedLink);
 
         // Continue with your code, such as taking a screenshot or performing other actions
     } else {
