@@ -254,8 +254,8 @@ for (let i = 0; i < 1; i++) {
     await sleep(delay);
 
     
-     var pageurl = await page.url(); // Get full HTML content of the page
-        console.log("pageurl", pageurl); // Print the full HTML to the console
+    // var pageurl = await page.url(); // Get full HTML content of the page
+      //  console.log("pageurl", pageurl); // Print the full HTML to the console
     //var pagecontent = await page.content(); // Get full HTML content of the page
       //  console.log("pagecontent", pagecontent); // Print the full HTML to the console
 
@@ -289,8 +289,8 @@ if (letMeInLink) {
     await page.evaluate(() => {
         const letMeInButton = document.querySelector('a[href*="/ghits/"]');
         if (letMeInButton) {
-           // letMeInButton.scrollIntoView();
-            letMeInButton.focus();
+           letMeInButton.scrollIntoView();
+            //letMeInButton.focus();
         }
     });
     
