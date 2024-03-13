@@ -125,10 +125,10 @@ const puppeteerCrawler = new PuppeteerCrawler({
         }
 
         log.info("Saving screenshot...");
-        const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
-        const screenshotBuffer = await page.screenshot({ fullPage: true });
+        var screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+        var screenshotBuffer = await page.screenshot({ fullPage: true });
         await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
-        const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+        var screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
         log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 
         const html = await page.content(); // Get full HTML content of the page
