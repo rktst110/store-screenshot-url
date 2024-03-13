@@ -222,6 +222,9 @@ for (let i = 0; i < 1; i++) {
                 const anchor = shadowRoot.querySelector('div.mcimg > a') as HTMLAnchorElement | null;
                 console.log("anchor", anchor);
                 if (anchor) {
+                    console.log("before focus anchor.href", anchor.href)
+                     anchor.focus();
+                     console.log("after focus anchor.href", anchor.href)
                     anchor.click();
                     return anchor.href;
                 } else {
