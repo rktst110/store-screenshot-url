@@ -253,6 +253,12 @@ for (let i = 0; i < 1; i++) {
     // Sleep if needed
     await sleep(delay);
 
+    log.info("Saving screenshot...");
+    const screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+    const screenshotBuffer = await page.screenshot({ fullPage: true });
+    await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+    const screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+    log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
     
     // var pageurl = await page.url(); // Get full HTML content of the page
       //  console.log("pageurl", pageurl); // Print the full HTML to the console
@@ -273,7 +279,7 @@ const letMeInLink = await page.evaluate(() => {
                      letMeInButton.focus();
                      //console.log("after focus anchor.href", anchor.href)
                     letMeInButton.click();
-                    return letMeInButton;
+                    return letMeInButton.href;
                 } else {
                     console.error('Anchor element not found inside shadow root.');
                     return null;
@@ -283,7 +289,7 @@ const letMeInLink = await page.evaluate(() => {
 
 if (letMeInLink) {
     // Print the link of the "Let me in!" button
-    console.log('Link of "Let me in!" button:', letMeInLink.href);
+    console.log('Link of "Let me in!" button:', letMeInLink);
 
     // Scroll to the button to ensure it's in view
     await page.evaluate(() => {
