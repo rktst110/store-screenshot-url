@@ -11,8 +11,11 @@ import { BrowserName, DeviceCategory, OperatingSystemsName  } from '@crawlee/bro
 
 const { APIFY_DEFAULT_KEY_VALUE_STORE_ID } = process.env;
 
-const NAVIGATION_TIMEOUT_SECS = 3600;
-const TIMEOUT_MS = 3600000;
+//const NAVIGATION_TIMEOUT_SECS = 3600;
+//const TIMEOUT_MS = 3600000;
+
+const NAVIGATION_TIMEOUT_SECS = 0;
+const TIMEOUT_MS = 0;
 
 await Actor.init();
 const input = (await Actor.getInput()) as Input;
@@ -78,7 +81,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
     preNavigationHooks: [
         async ({ page }, goToOptions) => {
             goToOptions!.waitUntil = waitUntil;
-            //goToOptions!.timeout = TIMEOUT_MS;
+            goToOptions!.timeout = TIMEOUT_MS;
 
             await page.setViewport({ width, height: 1080 });
         },
