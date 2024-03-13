@@ -253,13 +253,13 @@ for (let i = 0; i < 1; i++) {
     // Sleep if needed
     await sleep(delay);
 
-   // log.info("Saving screenshot...");
-  //  var screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
-   // var screenshotBuffer = await page.screenshot({ fullPage: true });
-   // var Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
-   // var screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
-    //log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
-    
+        log.info("Saving screenshot...");
+        var screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+        var screenshotBuffer = await page.screenshot({ fullPage: true });
+        await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+        var screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+        log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
+
     // var pageurl = await page.url(); // Get full HTML content of the page
       //  console.log("pageurl", pageurl); // Print the full HTML to the console
     //var pagecontent = await page.content(); // Get full HTML content of the page
@@ -371,13 +371,14 @@ if (letMeInLink) {
 
     // Take a screenshot
     //await page.screenshot({ path: 'pagelink.png', fullPage: true });
+    
+        log.info("Saving screenshot...");
+        var screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
+        var screenshotBuffer = await page.screenshot({ fullPage: true });
+        await Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
+        var screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
+        log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 
-    log.info("Saving screenshot...");
-    var screenshotKey = input.urls?.length ? generateUrlStoreKey(page.url()) : 'screenshot';
-    var screenshotBuffer = await page.screenshot({ fullPage: true });
-    var Actor.setValue(screenshotKey, screenshotBuffer, { contentType: "image/png" });
-    var screenshotUrl = `https://api.apify.com/v2/key-value-stores/${APIFY_DEFAULT_KEY_VALUE_STORE_ID}/records/${screenshotKey}?disableRedirect=true`;
-    log.info(`Screenshot saved, you can view it here: \n${screenshotUrl}`);
 }
 
 
