@@ -78,7 +78,7 @@ const puppeteerCrawler = new PuppeteerCrawler({
     preNavigationHooks: [
         async ({ page }, goToOptions) => {
             goToOptions!.waitUntil = waitUntil;
-            goToOptions!.timeout = TIMEOUT_MS;
+            //goToOptions!.timeout = TIMEOUT_MS;
 
             await page.setViewport({ width, height: 1080 });
         },
