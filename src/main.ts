@@ -252,6 +252,112 @@ for (let i = 0; i < 1; i++) {
 
     // Sleep if needed
     await sleep(delay);
+
+    
+     var pageurl = await page.url(); // Get full HTML content of the page
+        console.log("pageurl", pageurl); // Print the full HTML to the console
+    //var pagecontent = await page.content(); // Get full HTML content of the page
+      //  console.log("pagecontent", pagecontent); // Print the full HTML to the console
+
+
+// Wait for the "Let me in!" button to appear
+await page.waitForSelector('a[href*="/ghits/"]');
+
+
+    
+// Extract the href attribute of the "Let me in!" button
+const letMeInLink = await page.evaluate(() => {
+    const letMeInButton = document.querySelector('a[href*="/ghits/"]') as HTMLAnchorElement | null; // Cast to HTMLAnchorElement
+    if (letMeInButton) {
+                   // console.log("before focus anchor.href", anchor.href)
+                     letMeInButton.focus();
+                     //console.log("after focus anchor.href", anchor.href)
+                    letMeInButton.click();
+                    return letMeInButton;
+                } else {
+                    console.error('Anchor element not found inside shadow root.');
+                    return null;
+                }
+    //return letMeInButton ? letMeInButton.href : null; // Perform null check
+});
+
+if (letMeInLink) {
+    // Print the link of the "Let me in!" button
+    console.log('Link of "Let me in!" button:', letMeInLink.href);
+
+    // Scroll to the button to ensure it's in view
+    await page.evaluate(() => {
+        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+        if (letMeInButton) {
+           // letMeInButton.scrollIntoView();
+            letMeInButton.focus();
+        }
+    });
+    
+        // Click on the link
+    //await page.goto(letMeInLink);
+    
+      // Click on the link
+    await Promise.all([
+        //page.waitForNavigation(), // Wait for navigation to complete
+        page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+    ]);
+
+    
+/*
+    // Click on the link
+    await Promise.all([
+        //page.waitForNavigation(), // Wait for navigation to complete
+        page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+    ]);
+
+
+
+    
+    // Get the bounding box of the button
+    const buttonBoundingBox = await page.evaluate(() => {
+        const letMeInButton = document.querySelector('a[href*="/ghits/"]');
+        if (!letMeInButton) return null; // Perform null check
+        const rect = letMeInButton.getBoundingClientRect();
+        return {
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height
+        };
+    });
+
+    if (buttonBoundingBox) { // Check if buttonBoundingBox is not null
+        // Calculate click position relative to the button
+        const clickX = buttonBoundingBox.x + buttonBoundingBox.width / 2;
+        const clickY = buttonBoundingBox.y + buttonBoundingBox.height / 2;
+
+        // Perform a mouse click at the calculated position
+        await page.mouse.click(clickX, clickY);
+
+        // Wait for navigation to complete
+        //await page.waitForNavigation();
+
+        console.log('Clicked on "Let me in!" button');
+    } else {
+        console.log('Unable to find bounding box for "Let me in!" button');
+    }
+    
+                    
+    // Take a screenshot
+    //await page.screenshot({ path: 'let_me_in.png', fullPage: true });
+*/
+    
+    console.log('Clicked on "Let me in!" button');
+} else {
+    console.log('Unable to find "Let me in!" button');
+}
+
+
+    
+    
+    // Sleep if needed
+    await sleep(delay);
     const pageurl = await page.url(); // Get full HTML content of the page
     console.log("pageurl", pageurl); // Print the full HTML to the console
     const pagecontent = await page.content(); // Get full HTML content of the page
