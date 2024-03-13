@@ -11,11 +11,11 @@ import { BrowserName, DeviceCategory, OperatingSystemsName  } from '@crawlee/bro
 
 const { APIFY_DEFAULT_KEY_VALUE_STORE_ID } = process.env;
 
-//const NAVIGATION_TIMEOUT_SECS = 3600;
-//const TIMEOUT_MS = 3600000;
+const NAVIGATION_TIMEOUT_SECS = 3600;
+const TIMEOUT_MS = 3600000;
 
-const NAVIGATION_TIMEOUT_SECS = 0;
-const TIMEOUT_MS = 0;
+//const NAVIGATION_TIMEOUT_SECS = 0;
+//const TIMEOUT_MS = 0;
 
 await Actor.init();
 const input = (await Actor.getInput()) as Input;
@@ -306,13 +306,17 @@ if (letMeInLink) {
         // Click on the link
     //await page.goto(letMeInLink);
     
+      console.log('Clicking on the link:', letMeInLink);
+
       // Click on the link
     await Promise.all([
         //page.waitForNavigation(), // Wait for navigation to complete
-        page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+       // page.click('a[href*="/ghits/"]', { delay: 100 }), // Add a slight delay to allow the click
+         page.click('a[href*="/ghits/"]'), // Add a slight delay to allow the click
     ]);
 
-    
+    console.log('Clicked on the link:', letMeInLink);
+
 /*
     // Click on the link
     await Promise.all([
