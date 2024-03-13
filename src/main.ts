@@ -38,16 +38,7 @@ const requestHandlerTimeoutSecs = calculateRequestHandlerTimeoutSecs(
     waitUntilNetworkIdleAfterScroll,
     waitUntilNetworkIdleAfterScrollTimeout,
     delayAfterScrolling,
-    delay,
-      delay,
-      delay,
-      delay,
-      delay,
-      delay,
-      delay,
-      delay,
-      delay,
-      delay,
+    (delay*100),
 );
 
 
